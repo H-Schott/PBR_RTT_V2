@@ -17,10 +17,9 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 # set path to dependencies
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 set(ZLIB_LIBRARIES zlibstatic)
-set(ENABLE_BOOST_WORKAROUND ON)
 set(BUILD_STATIC_LIB ON)
-set(BUILD_ASSIMP_TOOLS  OFF)
 set(ASSIMP_BUILD_STATIC_LIB ON)
 add_definitions(-DGLEW_STATIC)
 add_subdirectory(dependency/assimp EXCLUDE_FROM_ALL)
@@ -44,6 +43,8 @@ if (WIN32)
 	add_executable(${DEMO} 
 		${IMGUI_SRC_FILES} 
 		${SRC_FILES}
+		${SRC_DIR}/color.hpp
+		${SRC_DIR}/image.hpp
 		${SRC_DIR}/mesh.hpp
 		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/stb_image.h
@@ -52,6 +53,8 @@ else()
 	add_executable(${DEMO} 
 		${IMGUI_SRC_FILES} 
 		${SRC_FILES}
+		${SRC_DIR}/color.hpp
+		${SRC_DIR}/image.hpp
 		${SRC_DIR}/mesh.hpp
 		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/stb_image.h
@@ -74,6 +77,6 @@ if (!WIN32)
 	target_link_libraries(${DEMO} "stdc++fs")
 endif()
 target_compile_definitions(
-    ${DEMO} PUBLIC
+    ${DEMO} PRIVATE
     -DPATH_TO_SRC_DIRECTORY="${CMAKE_SOURCE_DIR}/"
 )

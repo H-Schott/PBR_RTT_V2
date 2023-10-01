@@ -5,8 +5,9 @@
 #include <sstream>
 #include <cmath>
 
-#include "stb_image.h"
+#include "image.hpp"
 #include "mesh.hpp"
+#include "stb_image.h"
 
 
 /* LINUX
@@ -25,6 +26,8 @@ open and compile with vs
 
 int main(int, char**) {
     std::cout << "Hello World !" << std::endl;
+
+    Image img;
 
     return 0;
 }
