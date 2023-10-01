@@ -8,19 +8,20 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#include "point.hpp"
 #include "vector.hpp"
 
 struct Vertex {
-    glm::vec3 Position;
-    glm::vec3 Normal;
-    glm::vec3 Color;
-    glm::vec3 Bary;
+    Point Position;
+    Vector Normal;
+    Point Color;
+    Vector Bary;
     //glm::vec2 TexCoords;
 
-    Vertex(glm::vec3 P, glm::vec3 N, glm::vec3 C) :
-        Position(P), Normal(N), Color(C), Bary(glm::vec3(1, 0, 0)) {}
+    Vertex(Point P, Vector N, Point C) :
+        Position(P), Normal(N), Color(C), Bary(Vector(1, 0, 0)) {}
 
-    Vertex(glm::vec3 P, glm::vec3 N, glm::vec3 C, glm::vec3 B) :
+    Vertex(Point P, Vector N, Point C, Point B) :
         Position(P), Normal(N), Color(C), Bary(B) {}
 };
 
@@ -36,8 +37,8 @@ public:
     std::vector<unsigned int> indices;
     std::vector<Texture> textures;
 
-    glm::vec3 min_vertex{0, 0, 0};
-    glm::vec3 max_vertex{0, 0, 0};
+    Point min_vertex{0, 0, 0};
+    Point max_vertex{0, 0, 0};
 
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
     Mesh(std::string path);

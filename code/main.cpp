@@ -24,6 +24,7 @@ open and compile with vs
 */
 
 int main(int, char**) {
+    std::cout << "Hello World !" << std::endl;
 
     return 0;
 }

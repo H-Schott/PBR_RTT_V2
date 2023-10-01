@@ -44,7 +44,7 @@ void Mesh::AddAiNode(const aiNode* node, const aiScene* scene) {
 void Mesh::AddAiMesh(const aiMesh* mesh, const aiScene* scene) {
     int offset = vertices.size();
     for(unsigned int i = 0; i < mesh->mNumVertices; i++) {
-        glm::vec3 p;
+        Point p;
         p.x = mesh->mVertices[i].x;
         p.y = mesh->mVertices[i].y;
         p.z = mesh->mVertices[i].z;
@@ -54,12 +54,12 @@ void Mesh::AddAiMesh(const aiMesh* mesh, const aiScene* scene) {
             if (p[j] < min_vertex[j]) min_vertex[j] = p[j];
         }
         
-        glm::vec3 n;
+        Vector n;
         n.x = mesh->mNormals[i].x;
         n.y = mesh->mNormals[i].y;
         n.z = mesh->mNormals[i].z;
         //glm::vec3 c(0.8, 0.8, 0.8);
-        glm::vec3 c(0.38, 0.306, 0.102);
+        Point c(0.38, 0.306, 0.102);
         vertices.push_back(Vertex(p, n, c));
     }
 
@@ -72,7 +72,7 @@ void Mesh::AddAiMesh(const aiMesh* mesh, const aiScene* scene) {
 
 
 void Mesh::Center() {
-    glm::vec3 centre = (max_vertex + min_vertex);
+    Point centre = (max_vertex + min_vertex);
     centre *= 0.5;
     int nb_vertices = vertices.size();
     for (int i = 0; i < nb_vertices; i++) {
@@ -97,23 +97,23 @@ void Mesh::Scale(double coeff) {
 
 Mesh Mesh::Sphere(int size) {
 
-    glm::vec3 white = glm::vec3(1, 1, 1);
+    Point white = Point(1, 1, 1);
     std::vector<Vertex> v;
 
     // top and bottom vertices
-    v.push_back(Vertex(glm::vec3(0., 0., -1), glm::vec3(0., 0., -1), white));
-    v.push_back(Vertex(glm::vec3(0., 0., 1),  glm::vec3(0., 0., 1),  white));
+    v.push_back(Vertex(Point(0., 0., -1), Vector(0., 0., -1), white));
+    v.push_back(Vertex(Point(0., 0., 1),  Vector(0., 0., 1),  white));
 
     // min / max vertices
-    glm::vec3 mi{ 0, 0, 0 };
-    glm::vec3 ma{ 0, 0, 0 };
+    Point mi{ 0, 0, 0 };
+    Point ma{ 0, 0, 0 };
 
     // fill other vertices
     for (int i = 0; i < size; i++) {
         double xy_angle = 2 * M_PI / size * i;
         for (int j = 1; j < size; j++) {
             double z_angle = M_PI / size * j;
-            glm::vec3 point(cos(xy_angle) * sin(z_angle), sin(xy_angle) * sin(z_angle), cos(z_angle));
+            Point point(cos(xy_angle) * sin(z_angle), sin(xy_angle) * sin(z_angle), cos(z_angle));
             v.push_back(Vertex(point, point, white));
             // update min/max
             for (int j = 0; j < 3; j++) {
