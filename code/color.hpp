@@ -14,8 +14,8 @@ public:
 	Color(float _r, float _g, float _b);
 	Color(float value);
 
-	Color ToGray();
-	Color ToGray(float kr, float kg, float kb);
+	Color ToGray() const;
+	Color ToGray(float kr, float kg, float kb) const;
 };
 
 #endif

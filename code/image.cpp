@@ -1,5 +1,9 @@
 #include "image.hpp"
 
+#include "stb_image.h"
+#include "stb_image_write.h"
+
+
 Image::Image() {
 	width = 0;
 	height = 0;
@@ -32,7 +36,56 @@ Image::Image(int w, int h, const std::vector<Color>& c) : width(w), height(h) {
 Image::Image(std::string file_name) {
 	width = 0;
 	height = 0;
-	// TODO
+	
+	int w = 0;
+	int h = 0;
+	int channels = 0;
+	unsigned char* img = stbi_load(file_name.c_str(), &w, &h, &channels, 0);
+
+	if (img == nullptr) {
+		std::cerr << "Image::Image(std::string) : Image not found : " << file_name << std::endl;
+		return;
+	}
+
+	std::cout << w << " " << h << " " << channels << std::endl;
+
+	width = w;
+	height = h;
+	pixels.reserve(width * height);
+	for (int i = 0; i < w * h; i++) {
+		Color color;
+		if (channels == 1) color = Color(img[channels * i]);
+		else color = Color(img[channels * i], img[channels * i + 1], img[channels * i + 2]);
+		pixels.push_back(color);
+	}
+
+	stbi_image_free(img);
+}
+
+
+void Image::Save(std::string file_name) const {
+	unsigned char* img = new unsigned char[width * height * 3];
+
+	for (int i = 0; i < width * height; i++) {
+		img[3 * i] = pixels[i].r;
+		img[3 * i + 1] = pixels[i].g;
+		img[3 * i + 2] = pixels[i].b;
+	}
+
+	stbi_write_png(file_name.c_str(), width, height, 3, img, width * 3);
+
+	delete[] img;
+}
+
+Image Image::GetGrayVersion() const {
+
+	Image img(width, height);
+
+	for (int i = 0; i < width * height; i++) {
+		img.pixels[i] = pixels[i].ToGray();
+	}
+
+	return img;
 }
 
 

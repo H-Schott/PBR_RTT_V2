@@ -7,7 +7,6 @@
 
 #include "image.hpp"
 #include "mesh.hpp"
-#include "stb_image.h"
 
 
 /* LINUX
@@ -27,7 +26,9 @@ open and compile with vs
 int main(int, char**) {
     std::cout << "Hello World !" << std::endl;
 
-    Image img;
+    Image img = Image("data/bucketHat.png");
+    img = img.GetGrayVersion();
+    img.Save("data/test.png");
 
     return 0;
 }

@@ -29,11 +29,11 @@ Color::Color(float value) {
 }
 
 
-Color Color::ToGray() {
+Color Color::ToGray() const {
 	return ToGray(0.3, 0.59, 0.11);
 }
 
-Color Color::ToGray(float kr, float kg, float kb) {
+Color Color::ToGray(float kr, float kg, float kb) const {
 	return Color(kr * r + kg * g + kb * b);
 }
 
