@@ -48,6 +48,7 @@ if (WIN32)
 		${SRC_DIR}/color.hpp
 		${SRC_DIR}/image.hpp
 		${SRC_DIR}/mesh.hpp
+		${SRC_DIR}/ray.hpp
 		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/stb_image.h
 	)
@@ -58,6 +59,7 @@ else()
 		${SRC_DIR}/color.hpp
 		${SRC_DIR}/image.hpp
 		${SRC_DIR}/mesh.hpp
+		${SRC_DIR}/ray.hpp
 		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/stb_image.h
 	)

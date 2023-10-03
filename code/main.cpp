@@ -7,6 +7,7 @@
 
 #include "image.hpp"
 #include "mesh.hpp"
+#include "ray.hpp"
 
 
 /* LINUX
@@ -29,6 +30,9 @@ int main(int, char**) {
     Image img = Image("data/bucketHat.png");
     img = img.GetGrayVersion();
     img.Save("data/test.png");
+
+    Ray ray = Ray(Point(), Vector(1, 0, 0));
+    std::cout << ray(0.5) << std::endl;
 
     return 0;
 }
