@@ -1,9 +1,4 @@
 #include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
-#include <sstream>
-#include <cmath>
 
 #include "image.hpp"
 #include "mesh.hpp"
