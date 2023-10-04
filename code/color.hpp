@@ -16,6 +16,10 @@ public:
 
 	Color ToGray() const;
 	Color ToGray(float kr, float kg, float kb) const;
+
+	static Color Red()   { return Color(255, 0  , 0);   };
+	static Color Green() { return Color(0  , 255, 0);   };
+	static Color Blue()  { return Color(0  , 0  , 255); };
 };
 
 #endif

@@ -34,7 +34,7 @@ Color Color::ToGray() const {
 }
 
 Color Color::ToGray(float kr, float kg, float kb) const {
-	return Color(kr * r + kg * g + kb * b);
+	return Color(int(kr * r + kg * g + kb * b));
 }
 
 
