@@ -3,14 +3,22 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures) {
-    this->vertices = vertices;
-    this->indices = indices;
-    this->textures = textures;
+Mesh::Mesh(const std::vector<Point>& points,
+           const std::vector<unsigned int>& indices,
+           const std::vector<Texture>& _textures) : textures(_textures) {
+    
+    int nb_triangles = indices.size() / 3;
+    triangles.reserve(nb_triangles);
 
-    //std::cout << vertices.size() << std::endl;
-    //std::cout << indices.size() / 3 << std::endl;
+    for (int i = 0; i < nb_triangles; i++) {
+        Point A = points[indices[3 * i]];
+        Point B = points[indices[3 * i + 1]];
+        Point C = points[indices[3 * i + 2]];
 
+        triangles.push_back(Triangle(A, B, C));
+    }
+    
+    std::cout << "Built a mesh with " << nb_triangles << " triangles." << std::endl;
 }
 
 
@@ -25,8 +33,7 @@ Mesh::Mesh(std::string path) {
 
     AddAiNode(scene->mRootNode, scene);
 
-    std::cout << indices.size() / 3. << " faces." << std::endl;
-    std::cout << vertices.size() << " vertices." << std::endl;
+    std::cout << "Built a mesh with " << triangles.size() << " triangles." << std::endl;
 }
 
 
@@ -42,7 +49,7 @@ void Mesh::AddAiNode(const aiNode* node, const aiScene* scene) {
 
 
 void Mesh::AddAiMesh(const aiMesh* mesh, const aiScene* scene) {
-    int offset = vertices.size();
+    std::vector<Point> points;
     for(unsigned int i = 0; i < mesh->mNumVertices; i++) {
         Point p;
         p.x = mesh->mVertices[i].x;
@@ -54,19 +61,19 @@ void Mesh::AddAiMesh(const aiMesh* mesh, const aiScene* scene) {
             if (p[j] < min_vertex[j]) min_vertex[j] = p[j];
         }
         
-        Vector n;
-        n.x = mesh->mNormals[i].x;
-        n.y = mesh->mNormals[i].y;
-        n.z = mesh->mNormals[i].z;
-        //glm::vec3 c(0.8, 0.8, 0.8);
-        Point c(0.38, 0.306, 0.102);
-        vertices.push_back(Vertex(p, n, c));
+        points.push_back(p);
+        
+        // Vector n;
+        // n.x = mesh->mNormals[i].x;
+        // n.y = mesh->mNormals[i].y;
+        // n.z = mesh->mNormals[i].z;
     }
 
     for(unsigned int i = 0; i < mesh->mNumFaces; i++) {
         aiFace face = mesh->mFaces[i];
-        for(unsigned int j = 0; j < face.mNumIndices; j++)
-            indices.push_back(offset + face.mIndices[j]);
+        triangles.push_back(Triangle(points[face.mIndices[0]],
+                                     points[face.mIndices[1]],
+                                     points[face.mIndices[2]]));
     }
 }
 

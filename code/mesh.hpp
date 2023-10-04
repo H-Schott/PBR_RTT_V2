@@ -10,20 +10,8 @@
 
 #include "point.hpp"
 #include "vector.hpp"
+#include "triangle.hpp"
 
-struct Vertex {
-    Point Position;
-    Vector Normal;
-    Point Color;
-    Vector Bary;
-    //glm::vec2 TexCoords;
-
-    Vertex(Point P, Vector N, Point C) :
-        Position(P), Normal(N), Color(C), Bary(Vector(1, 0, 0)) {}
-
-    Vertex(Point P, Vector N, Point C, Point B) :
-        Position(P), Normal(N), Color(C), Bary(B) {}
-};
 
 struct Texture {
     unsigned int id;
@@ -33,14 +21,15 @@ struct Texture {
 class Mesh {
 public:
 
-    std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
+    std::vector<Triangle> triangles;
     std::vector<Texture> textures;
 
     Point min_vertex{0, 0, 0};
     Point max_vertex{0, 0, 0};
 
-    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+    Mesh(const std::vector<Point>& points,
+         const std::vector<unsigned int>& indices,
+         const std::vector<Texture>& _textures);
     Mesh(std::string path);
     ~Mesh() {};
 
