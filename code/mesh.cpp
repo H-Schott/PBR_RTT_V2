@@ -81,9 +81,11 @@ void Mesh::AddAiMesh(const aiMesh* mesh, const aiScene* scene) {
 void Mesh::Center() {
     Point centre = (max_vertex + min_vertex);
     centre *= 0.5;
-    int nb_vertices = vertices.size();
-    for (int i = 0; i < nb_vertices; i++) {
-        vertices[i].Position -= centre;
+    int nb_triangles = triangles.size();
+    for (int i = 0; i < nb_triangles; i++) {
+        triangles[i].a -= centre;
+        triangles[i].b -= centre;
+        triangles[i].c -= centre;
     }
 
     min_vertex -= centre;
@@ -92,9 +94,11 @@ void Mesh::Center() {
 
 
 void Mesh::Scale(double coeff) {
-    int nb_vertices = vertices.size();
-    for (int i = 0; i < nb_vertices; i++) {
-        vertices[i].Position *= coeff;
+    int nb_triangles = triangles.size();
+    for (int i = 0; i < nb_triangles; i++) {
+        triangles[i].a *= coeff;
+        triangles[i].b *= coeff;
+        triangles[i].c *= coeff;
     }
 
     min_vertex *= coeff;
@@ -105,11 +109,11 @@ void Mesh::Scale(double coeff) {
 Mesh Mesh::Sphere(int size) {
 
     Point white = Point(1, 1, 1);
-    std::vector<Vertex> v;
+    std::vector<Point> pts;
 
     // top and bottom vertices
-    v.push_back(Vertex(Point(0., 0., -1), Vector(0., 0., -1), white));
-    v.push_back(Vertex(Point(0., 0., 1),  Vector(0., 0., 1),  white));
+    pts.push_back(Point(0., 0., -1));
+    pts.push_back(Point(0., 0., 1));
 
     // min / max vertices
     Point mi{ 0, 0, 0 };
@@ -121,7 +125,7 @@ Mesh Mesh::Sphere(int size) {
         for (int j = 1; j < size; j++) {
             double z_angle = M_PI / size * j;
             Point point(cos(xy_angle) * sin(z_angle), sin(xy_angle) * sin(z_angle), cos(z_angle));
-            v.push_back(Vertex(point, point, white));
+            pts.push_back(point);
             // update min/max
             for (int j = 0; j < 3; j++) {
                 if (point[j] > ma[j]) ma[j] = point[j];
@@ -157,7 +161,7 @@ Mesh Mesh::Sphere(int size) {
 
     std::vector<Texture> t;
 
-    Mesh m = Mesh(v, ids, t);
+    Mesh m = Mesh(pts, ids, t);
     m.min_vertex = mi;
     m.max_vertex = ma;
     return m;
