@@ -11,7 +11,7 @@
 #include "point.hpp"
 #include "vector.hpp"
 #include "triangle.hpp"
-
+#include "ray.hpp"
 
 struct Texture {
     unsigned int id;
@@ -27,6 +27,7 @@ public:
     Point min_vertex{0, 0, 0};
     Point max_vertex{0, 0, 0};
 
+    Mesh() {};
     Mesh(const std::vector<Point>& points,
          const std::vector<unsigned int>& indices,
          const std::vector<Texture>& _textures);
