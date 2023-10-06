@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "camera.hpp"
 #include "image.hpp"
 #include "mesh.hpp"
 #include "ray.hpp"
@@ -22,12 +23,12 @@ open and compile with vs
 int main(int, char**) {
     std::cout << "Hello World !" << std::endl;
 
-    Image img = Image("data/creator.png");
-    img = img.GetGrayVersion();
-    img.Save("data/test.png");
+    Camera camera = Camera(Point(), -Vector::X(), 5);
+    std::vector<Ray> rays = camera.GetRays(5, 2);
 
-    Ray ray = Ray(Point(), Vector(1, 0, 0));
-    std::cout << ray(0.5) << std::endl;
+    for (int i = 0; i < rays.size(); i++) {
+        std::cout << rays[i] << std::endl;
+    }
 
     return 0;
 }

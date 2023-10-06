@@ -6,7 +6,9 @@
 
 class RT_Scene : public Mesh {
 public:
+
     double t_max = 100000.;
+
 public:
     RT_Scene();
     RT_Scene(const Mesh& mesh);
