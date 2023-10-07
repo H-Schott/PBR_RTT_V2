@@ -1,5 +1,7 @@
 #include "color.hpp"
 
+#include <algorithm>
+
 Color::Color() {
 	r = 0;
 	g = 0;
@@ -37,6 +39,13 @@ Color Color::ToGray(float kr, float kg, float kb) const {
 	return Color(int(kr * r + kg * g + kb * b));
 }
 
+
+Color operator*(double a, const Color& color) {
+	int r = std::min(255, int(a * color.r));
+	int g = std::min(255, int(a * color.r));
+	int b = std::min(255, int(a * color.r));
+	return Color(r, g, b);
+}
 
 
 // EOF

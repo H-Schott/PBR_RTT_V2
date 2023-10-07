@@ -24,4 +24,8 @@ public:
 	static Color Black()  { return Color(0  , 0  , 0);   };
 };
 
+
+Color operator*(double a, const Color& color);
+
+
 #endif

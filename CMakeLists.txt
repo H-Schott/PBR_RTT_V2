@@ -50,6 +50,7 @@ if (WIN32)
 		${SRC_FILES}
 		${SRC_DIR}/camera.hpp
 		${SRC_DIR}/color.hpp
+		${SRC_DIR}/hit.hpp
 		${SRC_DIR}/image.hpp
 		${SRC_DIR}/mesh.hpp
 		${SRC_DIR}/ray.hpp
@@ -63,6 +64,7 @@ else()
 		${SRC_FILES}
 		${SRC_DIR}/camera.hpp
 		${SRC_DIR}/color.hpp
+		${SRC_DIR}/hit.hpp
 		${SRC_DIR}/image.hpp
 		${SRC_DIR}/mesh.hpp
 		${SRC_DIR}/ray.hpp

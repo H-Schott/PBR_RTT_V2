@@ -14,7 +14,7 @@ RT_Scene::RT_Scene(const std::string& file_name) : Mesh(file_name) {
 }
 
 
-bool RT_Scene::IntersectionTriangle(int t_id, const Ray& ray) const {
+Hit RT_Scene::IntersectionTriangle(int t_id, const Ray& ray) const {
 
     Triangle tri = triangles[t_id];
     Vector e1 = tri.Edge(0);
@@ -27,24 +27,28 @@ bool RT_Scene::IntersectionTriangle(int t_id, const Ray& ray) const {
     Vector tvec = ray.origin - a;
     
     float u = Dot(tvec, pvec) * inv_det;
-    if(u < 0 || u > 1) return false;
+    if(u < 0 || u > 1) return Hit();
     
     Vector qvec = Cross(tvec, e1);
     float v = Dot(ray.direction, qvec) * inv_det;
-    if(v < 0 || u + v > 1) return false;
+    if(v < 0 || u + v > 1) return Hit();
 
-    float t= Dot(e2, qvec) * inv_det;
-    if(t < 0 || t > t_max) return false;
+    float t = Dot(e2, qvec) * inv_det;
+    if(t < 0 || t > t_max) return Hit();
 
-    // return Hit(t, u, v, id);
-    return true;
+    return Hit(t, t_id, Vector(u, v, 1 - u - v));
 }
 
-bool RT_Scene::Intersection(const Ray& ray) const {
+Hit RT_Scene::Intersection(const Ray& ray) const {
+
+    Hit real_hit = Hit(t_max, -1, Vector());
+
     for (int i = 0; i < triangles.size(); i++) {
-        if (IntersectionTriangle(i, ray)) return true;
+        Hit temp_hit = IntersectionTriangle(i, ray);
+        if (temp_hit && temp_hit.t < real_hit.t) real_hit = temp_hit;
     }
-    return false;
+
+    return real_hit;
 }
 
 

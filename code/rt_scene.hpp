@@ -1,6 +1,7 @@
 #ifndef __RT_SCENE_HPP__
 #define __RT_SCENE_HPP__
 
+#include "hit.hpp"
 #include "mesh.hpp"
 #include "ray.hpp"
 
@@ -15,8 +16,8 @@ public:
     RT_Scene(const std::string& file_name);
     ~RT_Scene() {};
 
-    bool IntersectionTriangle(int t_id, const Ray& ray) const;
-    bool Intersection(const Ray& ray) const;
+    Hit IntersectionTriangle(int t_id, const Ray& ray) const;
+    Hit Intersection(const Ray& ray) const;
 };
 
 
