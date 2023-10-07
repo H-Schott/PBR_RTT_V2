@@ -28,20 +28,19 @@ int main(int, char**) {
     int width = 512;
     int height = 512;
 
-    /*std::vector<Point> pts = {Point(0., -1., 0.), Point(0., 1., 0.), Point(0., 0., 1.)};
-    std::vector<unsigned int> indices = { 0, 1, 2 };
-    std::vector<Texture> t;
-    Mesh mesh = Mesh(pts, indices, t);
-    RT_Scene scene = RT_Scene(mesh);*/
 
+    // Scene
     RT_Scene scene = RT_Scene("data/spot.obj");
 
+    // Camera
     Camera camera = Camera(Point(10., 0., 0.), -Vector::X(), 3);
     std::vector<Ray> rays = camera.GetRays(width, height);
 
-    Image img = Image(width, height);
-
+    // Light
     Point light_pos = camera.center;
+
+
+    Image img = Image(width, height);
 
     auto start_time = std::chrono::system_clock::now();
 #pragma omp parallel for
@@ -62,7 +61,7 @@ int main(int, char**) {
 
     auto end_time = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds{ end_time - start_time };
-    std::cout << elapsed_seconds.count() << std::endl;;
+    std::cout << "execution time : " << elapsed_seconds.count() << " seconds." << std::endl;;
 
     img.Save("data/rt_test.png");
 

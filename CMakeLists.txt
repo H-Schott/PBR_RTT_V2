@@ -46,7 +46,6 @@ include_directories(${SRC_DIR})
 aux_source_directory(${SRC_DIR} SRC_FILES)
 if (WIN32)
 	add_executable(${DEMO} 
-		${IMGUI_SRC_FILES} 
 		${SRC_FILES}
 		${SRC_DIR}/camera.hpp
 		${SRC_DIR}/color.hpp
@@ -57,10 +56,10 @@ if (WIN32)
 		${SRC_DIR}/rt_scene.hpp
 		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/stb_image.h
+		${SRC_DIR}/terrain.hpp
 	)
 else()
 	add_executable(${DEMO} 
-		${IMGUI_SRC_FILES} 
 		${SRC_FILES}
 		${SRC_DIR}/camera.hpp
 		${SRC_DIR}/color.hpp
@@ -71,6 +70,7 @@ else()
 		${SRC_DIR}/rt_scene.hpp
 		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/stb_image.h
+		${SRC_DIR}/terrain.hpp
 	)
 endif()
 

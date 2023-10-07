@@ -22,6 +22,11 @@ Mesh::Mesh(const std::vector<Point>& points,
 }
 
 
+Mesh::Mesh(const std::vector<Triangle>& t) : triangles(t) {
+    // TODO update bounds
+}
+
+
 Mesh::Mesh(std::string path) {
     Assimp::Importer import;
     const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_GenNormals);

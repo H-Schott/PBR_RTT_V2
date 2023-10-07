@@ -31,6 +31,7 @@ public:
     Mesh(const std::vector<Point>& points,
          const std::vector<unsigned int>& indices,
          const std::vector<Texture>& _textures);
+    Mesh(const std::vector<Triangle>& t);
     Mesh(std::string path);
     ~Mesh() {};
 
