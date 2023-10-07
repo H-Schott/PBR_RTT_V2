@@ -9,6 +9,10 @@ RT_Scene::RT_Scene(const Mesh& mesh) : Mesh(mesh) {
 
 }
 
+RT_Scene::RT_Scene(const std::string& file_name) : Mesh(file_name) {
+
+}
+
 
 bool RT_Scene::IntersectionTriangle(int t_id, const Ray& ray) const {
 
@@ -35,6 +39,14 @@ bool RT_Scene::IntersectionTriangle(int t_id, const Ray& ray) const {
     // return Hit(t, u, v, id);
     return true;
 }
+
+bool RT_Scene::Intersection(const Ray& ray) const {
+    for (int i = 0; i < triangles.size(); i++) {
+        if (IntersectionTriangle(i, ray)) return true;
+    }
+    return false;
+}
+
 
 
 //EOF

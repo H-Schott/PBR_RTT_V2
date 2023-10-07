@@ -12,9 +12,11 @@ public:
 public:
     RT_Scene();
     RT_Scene(const Mesh& mesh);
+    RT_Scene(const std::string& file_name);
     ~RT_Scene() {};
 
     bool IntersectionTriangle(int t_id, const Ray& ray) const;
+    bool Intersection(const Ray& ray) const;
 };
 
 
