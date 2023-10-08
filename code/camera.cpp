@@ -21,8 +21,8 @@ std::vector<Ray> Camera::GetRays(int width, int height) const {
 
 	Point top_left = center + (size_x / 2 - 0.5 * size_x / width) * local_x + (size_y / 2 - 0.5 * size_y / height) * local_y;
 
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
+	for (int j = 0; j < height; j++) {
+		for (int i = 0; i < width; i++) {
 			double x = size_x / width * i;
 			double y = size_y / height * j;
 			Point origin = top_left - x * local_x - y * local_y;

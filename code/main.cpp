@@ -6,6 +6,7 @@
 #include "mesh.hpp"
 #include "ray.hpp"
 #include "rt_scene.hpp"
+#include "terrain.hpp"
 
 
 /* LINUX
@@ -25,15 +26,22 @@ open and compile with vs
 int main(int, char**) {
     std::cout << "Hello World !" << std::endl;
 
+
+    /*int width = 1024;
+    int height = 640;*/
     int width = 512;
-    int height = 512;
+    int height = 320;
 
 
     // Scene
-    RT_Scene scene = RT_Scene("data/spot.obj");
+    Terrain t = Terrain("data/dem_128.png");
+    t.Scale(0.3);
+    Mesh mesh = t.GetMesh();
+    RT_Scene scene = RT_Scene(mesh);
+    //RT_Scene scene = RT_Scene("data/spot.obj");
 
     // Camera
-    Camera camera = Camera(Point(10., 0., 0.), -Vector::X(), 3);
+    Camera camera = Camera(Point(5., 0., 2.5), Normalize(Vector(-1., 0., -0.5)), 1.8);
     std::vector<Ray> rays = camera.GetRays(width, height);
 
     // Light

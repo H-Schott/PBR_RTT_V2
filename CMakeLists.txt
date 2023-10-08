@@ -47,6 +47,7 @@ aux_source_directory(${SRC_DIR} SRC_FILES)
 if (WIN32)
 	add_executable(${DEMO} 
 		${SRC_FILES}
+		${SRC_DIR}/bvh.hpp
 		${SRC_DIR}/camera.hpp
 		${SRC_DIR}/color.hpp
 		${SRC_DIR}/hit.hpp
@@ -61,6 +62,7 @@ if (WIN32)
 else()
 	add_executable(${DEMO} 
 		${SRC_FILES}
+		${SRC_DIR}/bvh.hpp
 		${SRC_DIR}/camera.hpp
 		${SRC_DIR}/color.hpp
 		${SRC_DIR}/hit.hpp
