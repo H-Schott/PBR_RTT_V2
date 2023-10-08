@@ -1,5 +1,7 @@
 #include "bvh.hpp"
 
+#include <algorithm>
+
 
 Box::Box() {
     p_min = Point();
@@ -36,6 +38,8 @@ BVH::BVH(const RT_Scene& scene) : triangles(scene.triangles) {
     for (int i = 0; i < scene.triangles.size(); i++) {
         t_ids.push_back(i);
     }
+
+    // Build
 }
 
 BVH::~BVH() {
@@ -47,6 +51,30 @@ BVH::~BVH() {
 Hit BVH::Intersection(const Ray& ray) const {
 
     return Hit();
+}
+
+
+void BVH::Partition(Box* root) {
+    if (root->end_id - root->start_id < 5) return;
+
+    // find largest axis
+    // TODO
+    int dim = 0;
+
+    Box* box_1 = new Box();
+    Box* box_2 = new Box();
+
+    root->box_1 = box_1;
+    root->box_2 = box_2;
+
+    int mid_id = (root->start_id + root->end_id) / 2;
+
+    /*std::nth_element(&t_ids[root->start_id], &t_ids[mid_id], &t_ids[root->end_id],
+        [dim](const unsigned int& a, const unsigned int& b) { return triangles[a].centroid[dim] < b.centroid[dim]; });
+        */
+
+    Partition(box_1);
+    Partition(box_2);
 }
 
 

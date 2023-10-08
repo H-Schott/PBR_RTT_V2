@@ -38,6 +38,9 @@ public:
     ~BVH();
 
     Hit Intersection(const Ray& ray) const;
+
+private:
+    void Partition(Box* root);
 };
 
 
