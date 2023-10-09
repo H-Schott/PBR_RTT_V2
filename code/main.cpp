@@ -1,6 +1,7 @@
 #include <iostream>
 #include <chrono>
 
+#include "bvh.hpp"
 #include "camera.hpp"
 #include "image.hpp"
 #include "mesh.hpp"
@@ -39,6 +40,9 @@ int main(int, char**) {
     Mesh mesh = t.GetMesh();
     RT_Scene scene = RT_Scene(mesh);
     //RT_Scene scene = RT_Scene("data/spot.obj");
+    std::cout << "start BVH" << std::endl;
+    BVH bvh = BVH(scene);
+    std::cout << "end BVH" << std::endl;
 
     // Camera
     Camera camera = Camera(Point(5., 0., 2.5), Normalize(Vector(-1., 0., -0.5)), 1.8);

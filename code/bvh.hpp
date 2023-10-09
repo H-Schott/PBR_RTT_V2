@@ -21,7 +21,8 @@ public:
     //Box(const Point& _p_min, const Point& _p_max);
     ~Box();
 
-    bool Intersection(const Ray& ray) const;
+    bool TestBox(const Ray& ray) const;
+    Hit Intersection(const Ray& ray) const;
 
 };
 
@@ -31,6 +32,7 @@ public:
 
     Box* root_box;
     std::vector<unsigned int> t_ids;
+    std::vector<Point> centroids;
     const std::vector<Triangle>& triangles;
 
 public:
