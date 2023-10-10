@@ -10,6 +10,8 @@ public:
 	Point origin;
     Vector direction;
 
+    double t_max = 100000.;
+
 	Ray();
 	Ray(Point o, Vector d);
 

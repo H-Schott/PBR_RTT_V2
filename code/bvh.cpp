@@ -22,26 +22,56 @@ Box::~Box() {
 
 
 bool Box::TestBox(const Ray& ray) const {
-    Point rmin = p_min;
-    Point rmax = p_max;
-    if (ray.direction.x < 0) std::swap(rmin.x, rmax.x);
-    if (ray.direction.y < 0) std::swap(rmin.y, rmax.y);
-    if (ray.direction.z < 0) std::swap(rmin.z, rmax.z);
-    Vector invd = Vector(1 / ray.direction.x, 1 / ray.direction.y, 1 / ray.direction.z);
-    Vector dmin = (rmin - ray.origin) * invd;
-    Vector dmax = (rmax - ray.origin) * invd;
+    float tmin = (p_min.x - ray.origin.x) / ray.direction.x;
+    float tmax = (p_max.x - ray.origin.x) / ray.direction.x;
 
-    float tmin = std::max(dmin.z, std::max(dmin.y, std::max(dmin.x, 0.f)));
-    float tmax = std::min(dmax.z, std::min(dmax.y, std::min(dmax.x, ray.t)));
-    return BBoxHit(tmin, tmax);
+    if (tmin > tmax) std::swap(tmin, tmax);
+
+    float tymin = (p_min.y - ray.origin.y) / ray.direction.y;
+    float tymax = (p_max.y - ray.origin.y) / ray.direction.y;
+
+    if (tymin > tymax) std::swap(tymin, tymax);
+
+    if ((tmin > tymax) || (tymin > tmax))
+        return false;
+
+    if (tymin > tmin)
+        tmin = tymin;
+
+    if (tymax < tmax)
+        tmax = tymax;
+
+    float tzmin = (p_min.z - ray.origin.z) / ray.direction.z;
+    float tzmax = (p_max.z - ray.origin.z) / ray.direction.z;
+
+    if (tzmin > tzmax) std::swap(tzmin, tzmax);
+
+    if ((tmin > tzmax) || (tzmin > tmax))
+        return false;
+
+    if (tzmin > tmin)
+        tmin = tzmin;
+
+    if (tzmax < tmax)
+        tmax = tzmax;
+
+    return true;
 }
 
-
+// TO PUT IN BVH INTERSECTION ?
 Hit Box::Intersection(const Ray& ray) const {
     // test intersection with your own box
     // if false return Hit()
+    if (!TestBox(ray)) return Hit();
     // 
     // if children are nullptr : loop on triangles and return
+    if (box_1 == nullptr) {
+        Hit real_hit = Hit(ray.t_max, -1, Vector());
+        for (int i = start_id; i <= end_id; i++) {
+            Hit temp_hit = IntersectionTriangle(i, ray);
+            if (temp_hit && temp_hit.t < real_hit.t) real_hit = temp_hit;
+        }
+    }
     // 
     // get recursively Hit1 from child box 1
     // get recursively Hit2 from child box 2

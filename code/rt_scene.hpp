@@ -8,8 +8,6 @@
 class RT_Scene : public Mesh {
 public:
 
-    double t_max = 100000.;
-
 public:
     RT_Scene();
     RT_Scene(const Mesh& mesh);
@@ -17,7 +15,7 @@ public:
     ~RT_Scene() {};
 
     Hit IntersectionTriangle(int t_id, const Ray& ray) const;
-    Hit Intersection(const Ray& ray) const;
+    virtual Hit Intersection(const Ray& ray) const;
 };
 
 

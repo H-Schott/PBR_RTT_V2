@@ -22,12 +22,12 @@ public:
     ~Box();
 
     bool TestBox(const Ray& ray) const;
-    Hit Intersection(const Ray& ray) const;
+    //Box* Find(const Ray& ray) const;
 
 };
 
 
-class BVH{
+class BVH : public RT_Scene {
 public:
 
     Box* root_box;
@@ -39,7 +39,8 @@ public:
     BVH(const RT_Scene& mesh);
     ~BVH();
 
-    Hit Intersection(const Ray& ray) const;
+    Hit Intersection(Box* box, const Ray& ray) const;
+    Hit Intersection(const Ray& ray) const override;
 
 private:
     void Partition(Box* root);

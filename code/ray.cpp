@@ -8,6 +8,7 @@ Ray::Ray(Point o, Vector d) : origin(o), direction(d) {
 
 }
 
+
 Point Ray::operator()(double t) const {
     return origin + t * direction;
 }

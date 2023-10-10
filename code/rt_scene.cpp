@@ -34,14 +34,14 @@ Hit RT_Scene::IntersectionTriangle(int t_id, const Ray& ray) const {
     if(v < 0 || u + v > 1) return Hit();
 
     float t = Dot(e2, qvec) * inv_det;
-    if(t < 0 || t > t_max) return Hit();
+    if(t < 0 || t > ray.t_max) return Hit();
 
     return Hit(t, t_id, Vector(u, v, 1 - u - v));
 }
 
 Hit RT_Scene::Intersection(const Ray& ray) const {
 
-    Hit real_hit = Hit(t_max, -1, Vector());
+    Hit real_hit = Hit(ray.t_max, -1, Vector());
 
     for (int i = 0; i < triangles.size(); i++) {
         Hit temp_hit = IntersectionTriangle(i, ray);
