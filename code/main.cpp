@@ -39,9 +39,13 @@ int main(int, char**) {
     t.Scale(0.3);
     Mesh mesh = t.GetMesh();
     RT_Scene scene = RT_Scene(mesh);
-    std::cout << "start BVH" << std::endl;
+
+    // BVH
+    auto bvh_start_time = std::chrono::system_clock::now();
     BVH bvh = BVH(scene);
-    std::cout << "end BVH" << std::endl;
+    auto bvh_end_time = std::chrono::system_clock::now();
+    std::chrono::duration<double> bvh_elapsed_seconds{ bvh_end_time - bvh_start_time };
+    std::cout << "BVH creation time : " << bvh_elapsed_seconds.count() << " seconds." << std::endl;
 
     // Camera
     Camera camera = Camera(Point(5., 0., 2.5), Normalize(Vector(-1., 0., -0.5)), 1.8);
@@ -57,7 +61,6 @@ int main(int, char**) {
     auto start_time = std::chrono::system_clock::now();
 #pragma omp parallel for
     for (int i = 0; i < rays.size(); i++) {
-        //Hit hit = scene.Intersection(rays[i]);
         Hit hit = bvh.Intersection(rays[i]);
         if (hit) {
 
