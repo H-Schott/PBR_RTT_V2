@@ -28,14 +28,14 @@ int main(int, char**) {
     std::cout << "Hello World !" << std::endl;
 
 
-    /*int width = 1024;
-    int height = 640;*/
-    int width = 512;
-    int height = 320;
+    int width = 1024;
+    int height = 640;
+    /*int width = 512;
+    int height = 320;*/
 
 
     // Scene
-    Terrain t = Terrain("data/dem_128.png");
+    Terrain t = Terrain("data/dem_1024.png");
     t.Scale(0.3);
     Mesh mesh = t.GetMesh();
     RT_Scene scene = RT_Scene(mesh);
@@ -52,14 +52,14 @@ int main(int, char**) {
     Point light_pos = camera.center;
 
 
+    
     Image img = Image(width, height);
 
     auto start_time = std::chrono::system_clock::now();
 #pragma omp parallel for
     for (int i = 0; i < rays.size(); i++) {
-        //std::cout << rays[i] << " : " << scene.IntersectionTriangle(0, rays[i]) << std::endl;
-        Hit hit = scene.Intersection(rays[i]);
-        //std::cout << hit.triangle_id << std::endl;
+        //Hit hit = scene.Intersection(rays[i]);
+        Hit hit = bvh.Intersection(rays[i]);
         if (hit) {
 
             // diffuse
@@ -73,7 +73,7 @@ int main(int, char**) {
 
     auto end_time = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds{ end_time - start_time };
-    std::cout << "execution time : " << elapsed_seconds.count() << " seconds." << std::endl;;
+    std::cout << "execution time : " << elapsed_seconds.count() << " seconds." << std::endl;
 
     img.Save("data/rt_test.png");
 

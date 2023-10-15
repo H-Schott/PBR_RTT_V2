@@ -33,7 +33,7 @@ public:
     Box* root_box;
     std::vector<unsigned int> t_ids;
     std::vector<Point> centroids;
-    const std::vector<Triangle>& triangles;
+    //const std::vector<Triangle>& triangles;
 
 public:
     BVH(const RT_Scene& mesh);
@@ -45,6 +45,18 @@ public:
 private:
     void Partition(Box* root);
 };
+
+inline std::ostream& operator<<(std::ostream& os, const Box* box) {
+    if (box == nullptr) {
+        std::cout << "NULLPTR" << std::endl;
+        return os;
+    }
+
+    os << "Box(" << box->p_min << ", " << box->p_max << ", " << box->start_id << ", " << box->end_id << ")" << std::endl;
+    os << box->box_1;
+    os << box->box_2;
+    return os;
+}
 
 
 #endif

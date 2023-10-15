@@ -16,8 +16,8 @@ Box::Box() {
 
 
 Box::~Box() {
-    delete box_1;
-    delete box_2;
+    if (box_1 != nullptr) delete box_1;
+    if (box_2 != nullptr) delete box_2;
 }
 
 
@@ -58,45 +58,24 @@ bool Box::TestBox(const Ray& ray) const {
     return true;
 }
 
-// TO PUT IN BVH INTERSECTION ?
-Hit Box::Intersection(const Ray& ray) const {
-    // test intersection with your own box
-    // if false return Hit()
-    if (!TestBox(ray)) return Hit();
-    // 
-    // if children are nullptr : loop on triangles and return
-    if (box_1 == nullptr) {
-        Hit real_hit = Hit(ray.t_max, -1, Vector());
-        for (int i = start_id; i <= end_id; i++) {
-            Hit temp_hit = IntersectionTriangle(i, ray);
-            if (temp_hit && temp_hit.t < real_hit.t) real_hit = temp_hit;
-        }
-    }
-    // 
-    // get recursively Hit1 from child box 1
-    // get recursively Hit2 from child box 2
-    // get closest intersection Hit
-    return Hit();
-}
-
 
 
 // ------------------------ BVH ------------------------
 
 
-BVH::BVH(const RT_Scene& scene) : triangles(scene.triangles) {
+BVH::BVH(const RT_Scene& scene) : RT_Scene(scene) {
     root_box = new Box();
     root_box->start_id = 0;
-    root_box->end_id = scene.triangles.size() - 1;
+    root_box->end_id = triangles.size() - 1;
 
-    t_ids.reserve(scene.triangles.size());
+    t_ids.reserve(triangles.size());
 
-    for (int i = 0; i < scene.triangles.size(); i++) {
+    for (int i = 0; i < triangles.size(); i++) {
         t_ids.push_back(i);
     }
 
     // Build centroids
-    for (int i = 0; i < scene.triangles.size(); i++) {
+    for (int i = 0; i < triangles.size(); i++) {
         centroids.push_back(triangles[i].Barycentre());
     }
 
@@ -108,17 +87,40 @@ BVH::~BVH() {
 }
 
 
+Hit BVH::Intersection(Box* box, const Ray& ray) const {
+    // test intersection with your own box
+    // if false return Hit()
+    if (!box->TestBox(ray)) return Hit();
+
+    // if children are nullptr : loop on triangles and return
+    if (box->box_1 == nullptr) {
+        Hit real_hit = Hit(ray.t_max, -1, Vector());
+        for (int i = box->start_id; i <= box->end_id; i++) {
+            Hit temp_hit = IntersectionTriangle(t_ids[i], ray);
+            if (temp_hit && temp_hit.t < real_hit.t) real_hit = temp_hit;
+        }
+        return real_hit;
+    }
+
+    // get recursively Hit1 from child box 1
+    Hit hit1 = Intersection(box->box_1, ray);
+    // get recursively Hit2 from child box 2
+    Hit hit2 = Intersection(box->box_2, ray);
+
+    // get closest intersection Hit
+    if (!hit2) return hit1;
+    else if (!hit1) return hit2;
+    else if (hit1.t <= hit2.t) return hit1;
+    return hit2;
+}
+
 
 Hit BVH::Intersection(const Ray& ray) const {
-
-    if (!root_box->Intersection(ray))
-
-    return Hit();
+    return Intersection(root_box, ray);
 }
 
 
 void BVH::Partition(Box* root) {
-    if (root->end_id - root->start_id < 5) return;
 
     // find your own bounds
     triangles[t_ids[root->start_id]].Bounds(root->p_min, root->p_max);
@@ -129,6 +131,8 @@ void BVH::Partition(Box* root) {
         root->p_min = Min(root->p_min, temp_min);
         root->p_max = Max(root->p_max, temp_max);
     }
+
+    if (root->end_id - root->start_id < 5) return;
 
     // find largest axis
     int dim = MaxDimension(root->p_max - root->p_min);
@@ -146,8 +150,8 @@ void BVH::Partition(Box* root) {
         
     root->box_1->start_id = root->start_id;
     root->box_1->end_id = mid_id;
-    root->box_1->start_id = mid_id + 1;
-    root->box_1->end_id = root->end_id;
+    root->box_2->start_id = mid_id + 1;
+    root->box_2->end_id = root->end_id;
 
     Partition(box_1);
     Partition(box_2);
