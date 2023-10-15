@@ -20,7 +20,7 @@ public:
 	Image(int w, int h);
 	Image(int w, int h, Color c);
 	Image(int w, int h, const std::vector<Color>& c);
-	Image(std::string file_name);
+	Image(std::string file_name, bool bit16 = false);
 
 	void Save(std::string file_name) const;
 

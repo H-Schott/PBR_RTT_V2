@@ -33,33 +33,60 @@ Image::Image(int w, int h, const std::vector<Color>& c) : width(w), height(h) {
 	pixels = c;
 }
 
-Image::Image(std::string file_name) {
+Image::Image(std::string file_name, bool bit16) {
 	width = 0;
 	height = 0;
 	
 	int w = 0;
 	int h = 0;
 	int channels = 0;
-	unsigned char* img = stbi_load(file_name.c_str(), &w, &h, &channels, 0);
 
-	if (img == nullptr) {
-		std::cerr << "Image::Image(std::string) : Image not found : " << file_name << std::endl;
-		return;
+	if (bit16) {
+		unsigned short* img = stbi_load_16(file_name.c_str(), &w, &h, &channels, 0);
+
+		if (img == nullptr) {
+			std::cerr << "Image::Image(std::string) : Image not found : " << file_name << std::endl;
+			return;
+		}
+
+		std::cout << w << " " << h << " " << channels << std::endl;
+
+		width = w;
+		height = h;
+		pixels.reserve(width * height);
+		for (int i = 0; i < w * h; i++) {
+			Color color;
+			if (channels == 1) color = Color(img[channels * i]);
+			else color = Color(img[channels * i], img[channels * i + 1], img[channels * i + 2]);
+			pixels.push_back(color);
+		}
+
+		stbi_image_free(img);
 	}
+	else {
+		unsigned char* img = stbi_load(file_name.c_str(), &w, &h, &channels, 0);
 
-	std::cout << w << " " << h << " " << channels << std::endl;
+		if (img == nullptr) {
+			std::cerr << "Image::Image(std::string) : Image not found : " << file_name << std::endl;
+			return;
+		}
 
-	width = w;
-	height = h;
-	pixels.reserve(width * height);
-	for (int i = 0; i < w * h; i++) {
-		Color color;
-		if (channels == 1) color = Color(img[channels * i]);
-		else color = Color(img[channels * i], img[channels * i + 1], img[channels * i + 2]);
-		pixels.push_back(color);
+		std::cout << w << " " << h << " " << channels << std::endl;
+
+		width = w;
+		height = h;
+		pixels.reserve(width * height);
+		for (int i = 0; i < w * h; i++) {
+			Color color;
+			if (channels == 1) color = Color(img[channels * i]);
+			else color = Color(img[channels * i], img[channels * i + 1], img[channels * i + 2]);
+			pixels.push_back(color);
+		}
+
+		stbi_image_free(img);
 	}
+	
 
-	stbi_image_free(img);
 }
 
 

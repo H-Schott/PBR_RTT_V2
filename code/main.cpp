@@ -28,8 +28,8 @@ int main(int, char**) {
     std::cout << "Hello World !" << std::endl;
 
 
-    int width = 1024;
-    int height = 640;
+    int width = 1024 * 4;
+    int height = 640 * 4;
     /*int width = 512;
     int height = 320;*/
 
@@ -39,7 +39,6 @@ int main(int, char**) {
     t.Scale(0.3);
     Mesh mesh = t.GetMesh();
     RT_Scene scene = RT_Scene(mesh);
-    //RT_Scene scene = RT_Scene("data/spot.obj");
     std::cout << "start BVH" << std::endl;
     BVH bvh = BVH(scene);
     std::cout << "end BVH" << std::endl;

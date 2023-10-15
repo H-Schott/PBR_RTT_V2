@@ -25,7 +25,7 @@ Terrain::Terrain(std::string file_name) {
 	int w = 0;
 	int h = 0;
 	int channels = 0;
-	unsigned char* img = stbi_load(file_name.c_str(), &w, &h, &channels, 0);
+	unsigned short* img = stbi_load_16(file_name.c_str(), &w, &h, &channels, 0);
 
 	if (img == nullptr) {
 		std::cerr << "Terrain::Terrain(std::string) : Image not found : " << file_name << std::endl;
@@ -38,7 +38,7 @@ Terrain::Terrain(std::string file_name) {
 	height = h;
 	heights.reserve(width * height);
 	for (int i = 0; i < w * h; i++) {
-		double h = img[channels * i] / 255.;
+		double h = img[channels * i] / double(USHRT_MAX);
 		heights.push_back(h);
 	}
 
