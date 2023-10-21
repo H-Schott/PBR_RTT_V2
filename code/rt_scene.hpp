@@ -16,6 +16,8 @@ public:
 
     Hit IntersectionTriangle(int t_id, const Ray& ray) const;
     virtual Hit Intersection(const Ray& ray) const;
+    
+    Vector InterpolateNormal(const Hit& h) const;
 };
 
 

@@ -64,7 +64,21 @@ double& Terrain::operator()(int i, int j) {
 }
 
 Point Terrain::GetPoint(int i, int j) const {
+	// stay inside
+	i = std::max(0, i);
+	i = std::min(width - 1, i);
+	j = std::max(0, j);
+	j = std::min(height - 1, j);
+
 	return Point(-1., -1., 0.) + Point(i * cell_size, j * cell_size, (*this)(i, j));
+}
+
+
+Vector Terrain::GetNormal(int i, int j) const {
+	Vector x_comp = GetPoint(i + 1, j) - GetPoint(i - 1, j);
+	Vector y_comp = GetPoint(i, j + 1) - GetPoint(i, j - 1);
+	Vector normal = Cross(x_comp, y_comp);
+	return Normalize(normal);
 }
 
 
@@ -72,6 +86,8 @@ Mesh Terrain::GetMesh() const {
 
 	std::vector<Triangle> triangles;
 	triangles.reserve(2 * (width - 1) * (height - 1));
+	std::vector<Vector> normals;
+	normals.reserve(3 * 2 * (width - 1) * (height - 1));
 
 	for (int i = 0; i < width - 1; i++) {
 		for (int j = 0; j < height - 1; j++) {
@@ -81,12 +97,18 @@ Mesh Terrain::GetMesh() const {
 			Point d = GetPoint(i + 1, j + 1);
 			// triangle 1
 			triangles.push_back(Triangle(a, b, c));
+			normals.push_back(GetNormal(i, j));
+			normals.push_back(GetNormal(i + 1, j));
+			normals.push_back(GetNormal(i, j + 1));
 			// triangle 2
 			triangles.push_back(Triangle(b, d, c));
+			normals.push_back(GetNormal(i + 1, j));
+			normals.push_back(GetNormal(i + 1, j + 1));
+			normals.push_back(GetNormal(i, j + 1));
 		}
 	}
 
-	return Mesh(triangles);
+	return Mesh(triangles, normals);
 }
 
 // EOF

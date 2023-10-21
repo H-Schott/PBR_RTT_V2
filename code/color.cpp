@@ -18,13 +18,13 @@ Color::Color(int value) {
 	b = value;
 }
 
-Color::Color(float _r, float _g, float _b) {
+Color::Color(double _r, double _g, double _b) {
 	r = int(255. * _r);
 	g = int(255. * _g);
 	b = int(255. * _b);
 }
 
-Color::Color(float value) {
+Color::Color(double value) {
 	r = int(255. * value);
 	g = int(255. * value);
 	b = int(255. * value);
@@ -35,7 +35,7 @@ Color Color::ToGray() const {
 	return ToGray(0.3, 0.59, 0.11);
 }
 
-Color Color::ToGray(float kr, float kg, float kb) const {
+Color Color::ToGray(double kr, double kg, double kb) const {
 	return Color(int(kr * r + kg * g + kb * b));
 }
 

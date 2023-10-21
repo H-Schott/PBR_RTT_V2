@@ -23,6 +23,16 @@ Mesh::Mesh(const std::vector<Point>& points,
 
 
 Mesh::Mesh(const std::vector<Triangle>& t) : triangles(t) {
+    normals.reserve(triangles.size() * 3);
+    for (int i = 0; i < triangles.size(); i++) {
+        normals.push_back(triangles[i].Normal());
+        normals.push_back(triangles[i].Normal());
+        normals.push_back(triangles[i].Normal());
+    }
+    // TODO update bounds
+}
+
+Mesh::Mesh(const std::vector<Triangle>& t, const std::vector<Vector>& n) : triangles(t), normals(n) {
     // TODO update bounds
 }
 

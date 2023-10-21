@@ -22,6 +22,7 @@ class Mesh {
 public:
 
     std::vector<Triangle> triangles;
+    std::vector<Vector> normals;
     std::vector<Texture> textures;
 
     Point min_vertex{0, 0, 0};
@@ -32,6 +33,7 @@ public:
          const std::vector<unsigned int>& indices,
          const std::vector<Texture>& _textures);
     Mesh(const std::vector<Triangle>& t);
+    Mesh(const std::vector<Triangle>& t, const std::vector<Vector>& n);
     Mesh(std::string path);
     ~Mesh() {};
 

@@ -30,6 +30,8 @@ public:
 	double& operator()(int i, int j);
 	Point GetPoint(int i, int j) const;
 
+	Vector GetNormal(int i, int j) const;
+
 	Mesh GetMesh() const;
 };
 

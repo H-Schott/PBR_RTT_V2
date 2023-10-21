@@ -57,7 +57,7 @@ int main(int, char**) {
 
     
     Image img = Image(width, height);
-
+    
     auto start_time = std::chrono::system_clock::now();
 #pragma omp parallel for
     for (int i = 0; i < rays.size(); i++) {
@@ -66,10 +66,14 @@ int main(int, char**) {
 
             // diffuse
             Vector normal = scene.triangles[hit.triangle_id].Normal();
+            //Vector normal = scene.InterpolateNormal(hit);
             Vector light_dir = Normalize(light_pos - rays[i](hit.t));
             double diffuse_coeff = std::max(Dot(normal, light_dir), 0.);
 
             img.pixels[i] = diffuse_coeff * Color::White();
+            /*Vector n_color = Abs(normal);
+            double sum = n_color.x + n_color.y + n_color.z;
+            img.pixels[i] = Color(n_color.x / sum, n_color.y / sum, n_color.z / sum);*/
         }
     }
 
