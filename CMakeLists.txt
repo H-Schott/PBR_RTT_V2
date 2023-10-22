@@ -55,6 +55,7 @@ if (WIN32)
 		${SRC_DIR}/mesh.hpp
 		${SRC_DIR}/ray.hpp
 		${SRC_DIR}/rt_scene.hpp
+		${SRC_DIR}/sampler.hpp
 		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/stb_image.h
 		${SRC_DIR}/terrain.hpp
@@ -70,6 +71,7 @@ else()
 		${SRC_DIR}/mesh.hpp
 		${SRC_DIR}/ray.hpp
 		${SRC_DIR}/rt_scene.hpp
+		${SRC_DIR}/sampler.hpp
 		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/stb_image.h
 		${SRC_DIR}/terrain.hpp
