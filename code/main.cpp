@@ -7,6 +7,7 @@
 #include "mesh.hpp"
 #include "ray.hpp"
 #include "rt_scene.hpp"
+#include "sampler.hpp"
 #include "terrain.hpp"
 
 
