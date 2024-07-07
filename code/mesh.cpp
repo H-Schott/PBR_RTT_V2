@@ -78,10 +78,12 @@ void Mesh::AddAiMesh(const aiMesh* mesh, const aiScene* scene) {
         
         points.push_back(p);
         
-        // Vector n;
-        // n.x = mesh->mNormals[i].x;
-        // n.y = mesh->mNormals[i].y;
-        // n.z = mesh->mNormals[i].z;
+        Vector n;
+        n.x = mesh->mNormals[i].x;
+        n.y = mesh->mNormals[i].y;
+        n.z = mesh->mNormals[i].z;
+
+        normals.push_back(n);
     }
 
     for(unsigned int i = 0; i < mesh->mNumFaces; i++) {

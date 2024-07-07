@@ -55,6 +55,7 @@ if (WIN32)
 		${SRC_DIR}/mesh.hpp
 		${SRC_DIR}/ray.hpp
 		${SRC_DIR}/rt_scene.hpp
+		${SRC_DIR}/rt_tracer.hpp
 		${SRC_DIR}/sampler.hpp
 		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/stb_image.h
@@ -71,6 +72,7 @@ else()
 		${SRC_DIR}/mesh.hpp
 		${SRC_DIR}/ray.hpp
 		${SRC_DIR}/rt_scene.hpp
+		${SRC_DIR}/rt_tracer.hpp
 		${SRC_DIR}/sampler.hpp
 		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/stb_image.h

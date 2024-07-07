@@ -1,5 +1,9 @@
 #include "sampler.hpp"
 
+// to use M_PI
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 
 Sampler::Sampler(unsigned int s) : seed(s), last(s) {
 

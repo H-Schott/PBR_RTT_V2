@@ -29,16 +29,17 @@ int main(int, char**) {
     std::cout << "Hello World !" << std::endl;
 
 
-    int width = 1024 / 2;
-    int height = 640 / 2;
-    /*int width = 512;
-    int height = 320;*/
+    /*int width = 1024;
+    int height = 640;*/
+    int width = 512;
+    int height = 320;
 
 
     // Scene
-    Terrain t = Terrain("data/dem_256.png");
-    t.Scale(0.3);
-    Mesh mesh = t.GetMesh();
+    //Terrain t = Terrain("data/dem_1024.png");
+    //Terrain t = Terrain("data/chambery_2048.png");
+    //t.Scale(0.1);
+    Mesh mesh = Mesh("data/spot.obj");// t.GetMesh();
     RT_Scene scene = RT_Scene(mesh);
 
     // BVH
@@ -60,11 +61,11 @@ int main(int, char**) {
     Image img = Image(width, height);
     
     auto start_time = std::chrono::system_clock::now();
+    
 #pragma omp parallel for
     for (int i = 0; i < rays.size(); i++) {
         Hit hit = bvh.Intersection(rays[i]);
         if (hit) {
-
             // diffuse
             //Vector normal = scene.triangles[hit.triangle_id].Normal();
             Point p_hit = rays[i](hit.t);
@@ -72,12 +73,13 @@ int main(int, char**) {
             Vector light_dir = Normalize(light_pos - rays[i](hit.t));
             double diffuse_coeff = std::max(Dot(normal, light_dir), 0.);
 
-            //img.pixels[i] = diffuse_coeff * Color::White();
+            img.pixels[i] = diffuse_coeff * Color::White();
+            //continue;
             
             // AO
             NormalSampler sampler = NormalSampler(rand()%2000000);
             double ao = 0.;
-            int ao_samples = 16;
+            int ao_samples = 64;
             for (int i = 0; i < ao_samples; i++) {
                 Vector rand_dir = Normalize(Vector(sampler(), sampler(), sampler()));
                 if (Dot(rand_dir, normal) < 0) rand_dir = -rand_dir;
@@ -86,7 +88,9 @@ int main(int, char**) {
                 if (ao_hit) ao++;
             }
             ao /= ao_samples;
-            img.pixels[i] = (1. - ao) * Color::White();
+            /*
+            */
+            img.pixels[i] = (1. - ao)* Color::White();
         }
     }
 
