@@ -39,7 +39,7 @@ int main(int, char**) {
     //Terrain t = Terrain("data/dem_1024.png");
     //Terrain t = Terrain("data/chambery_2048.png");
     //t.Scale(0.1);
-    Mesh mesh = Mesh("data/spot.obj");// t.GetMesh();
+    Mesh mesh = Mesh("data/spot_tri.obj");// t.GetMesh();
     RT_Scene scene = RT_Scene(mesh);
 
     // BVH
@@ -67,9 +67,9 @@ int main(int, char**) {
         Hit hit = bvh.Intersection(rays[i]);
         if (hit) {
             // diffuse
-            //Vector normal = scene.triangles[hit.triangle_id].Normal();
+            Vector normal = scene.triangles[hit.triangle_id].Normal();
             Point p_hit = rays[i](hit.t);
-            Vector normal = scene.InterpolateNormal(hit);
+            //Vector normal = scene.InterpolateNormal(hit);
             Vector light_dir = Normalize(light_pos - rays[i](hit.t));
             double diffuse_coeff = std::max(Dot(normal, light_dir), 0.);
 
